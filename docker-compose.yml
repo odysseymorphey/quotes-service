@@ -1,0 +1,38 @@
+networks:
+  services-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+
+services:
+  database:
+    build:
+      context: ./docker/database
+      dockerfile: db.Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - services-network
+
+  backend:
+    build:
+      context: ./
+      dockerfile: docker/base.Dockerfile
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - services-network

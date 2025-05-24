@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS quotes (
+    id SERIAL PRIMARY KEY,
+    author VARCHAR(30) NOT NULL,
+    quote TEXT NOT NULL
+);
