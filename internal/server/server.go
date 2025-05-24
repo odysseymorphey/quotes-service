@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -9,7 +10,7 @@ import (
 )
 
 type Server struct {
-	mux  *http.ServeMux
+	srv  *http.Server
 	repo repository.Repository
 }
 
@@ -20,7 +21,10 @@ func New(r repository.Repository) *Server {
 	registerRoutes(m, h)
 
 	return &Server{
-		mux:  m,
+		srv: &http.Server{
+			Addr:    ":8080",
+			Handler: m,
+		},
 		repo: r,
 	}
 }
@@ -35,11 +39,12 @@ func registerRoutes(mux *http.ServeMux, h *handlers.BaseHandler) {
 }
 
 func (s *Server) Run() {
-	if err := http.ListenAndServe(":8080", s.mux); err != nil {
+	if err := s.srv.ListenAndServe(); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }
 
 func (s *Server) Stop() {
-	// TODO: Need graceful shutdown
+	log.Println(s.repo.Close())
+	log.Println(s.srv.Shutdown(context.Background()))
 }
