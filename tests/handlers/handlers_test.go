@@ -174,7 +174,7 @@ func TestBaseHandler_GetQuotes(t *testing.T) {
 			name:           "get all quotes successfully",
 			mockQuotes:     mockQuotes,
 			expectedCode:   http.StatusOK,
-			expectedBody:   `[{"id":"1","author":"Author1","quote":"Quote1"},{"id":"2","author":"Author2","quote":"Quote2"}]`,
+			expectedBody:   `[{"id":"1","author":"Author1","quote":"Quote1"},{"id":"2","author":"Author2","quote":"Quote2"}]` + "\n",
 			expectedHeader: "application/json",
 		},
 		{
@@ -182,7 +182,7 @@ func TestBaseHandler_GetQuotes(t *testing.T) {
 			queryParams:    map[string]string{"author": "Author1"},
 			mockQuotes:     []models.Quote{mockQuotes[0]},
 			expectedCode:   http.StatusOK,
-			expectedBody:   `[{"id":"1","author":"Author1","quote":"Quote1"}]`,
+			expectedBody:   `[{"id":"1","author":"Author1","quote":"Quote1"}]` + "\n",
 			expectedHeader: "application/json",
 		},
 		{
@@ -202,7 +202,7 @@ func TestBaseHandler_GetQuotes(t *testing.T) {
 			name:           "empty quotes list",
 			mockQuotes:     []models.Quote{},
 			expectedCode:   http.StatusOK,
-			expectedBody:   "[]",
+			expectedBody:   "[]\n",
 			expectedHeader: "application/json",
 		},
 	}
@@ -261,7 +261,7 @@ func TestBaseHandler_GetRandomQuote(t *testing.T) {
 			name:           "successful get random quote",
 			mockQuote:      mockQuote,
 			expectedCode:   http.StatusOK,
-			expectedBody:   `{"id":"1","author":"Test Author","quote":"Test Quote"}`,
+			expectedBody:   `{"id":"1","author":"Test Author","quote":"Test Quote"}` + "\n",
 			expectedHeader: "application/json",
 		},
 		{

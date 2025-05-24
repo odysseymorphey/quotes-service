@@ -9,7 +9,7 @@ import (
 )
 
 type Database struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 func New(dsn string) (*Database, error) {
@@ -23,7 +23,7 @@ func New(dsn string) (*Database, error) {
 	}
 
 	return &Database{
-		db: db,
+		Db: db,
 	}, nil
 }
 
@@ -32,7 +32,7 @@ func (d *Database) AddQuote(ctx context.Context, q models.Quote) error {
 
 	query := `INSERT INTO quotes(author, quote) VALUES ($1, $2)`
 
-	_, err := d.db.ExecContext(ctx, query, q.Author, q.Quote)
+	_, err := d.Db.ExecContext(ctx, query, q.Author, q.Quote)
 	if err != nil {
 		return fmt.Errorf("%s: failed to execute query: %v", op, err)
 	}
@@ -45,7 +45,7 @@ func (d *Database) GetQuotes(ctx context.Context) ([]models.Quote, error) {
 
 	query := `SELECT * FROM quotes`
 
-	rows, err := d.db.QueryContext(ctx, query)
+	rows, err := d.Db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: failed to execute query: %v", op, err)
 	}
@@ -68,7 +68,7 @@ func (d *Database) GetQuotesByAuthor(ctx context.Context, author string) ([]mode
 
 	query := `SELECT * FROM quotes WHERE author = $1`
 
-	rows, err := d.db.QueryContext(ctx, query, author)
+	rows, err := d.Db.QueryContext(ctx, query, author)
 	if err != nil {
 		return nil, fmt.Errorf("%s: failed to execute query: %v", op, err)
 	}
@@ -91,7 +91,7 @@ func (d *Database) GetRandomQuote(ctx context.Context) (*models.Quote, error) {
 
 	query := `SELECT * FROM quotes ORDER BY random() LIMIT 1`
 
-	row := d.db.QueryRowContext(ctx, query)
+	row := d.Db.QueryRowContext(ctx, query)
 
 	var quote models.Quote
 	err := row.Scan(&quote.Id, &quote.Author, &quote.Quote)
@@ -106,7 +106,7 @@ func (d *Database) DeleteQuote(ctx context.Context, id string) error {
 
 	query := `DELETE FROM quotes WHERE id = $1`
 
-	res, err := d.db.ExecContext(ctx, query, id)
+	res, err := d.Db.ExecContext(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("%s: failed to execute query: %w", op, err)
 	}
@@ -124,7 +124,7 @@ func (d *Database) DeleteQuote(ctx context.Context, id string) error {
 }
 
 func (d *Database) Close() error {
-	if err := d.db.Close(); err != nil {
+	if err := d.Db.Close(); err != nil {
 		return fmt.Errorf("failed to close database: %v", err)
 	}
 

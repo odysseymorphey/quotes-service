@@ -15,7 +15,7 @@ import (
 
 func NewMock() (*postgres2.Database, sqlmock.Sqlmock) {
 	db, mock, _ := sqlmock.New()
-	return &postgres2.Database{db: db}, mock
+	return &postgres2.Database{Db: db}, mock
 }
 
 func TestAddQuote(t *testing.T) {
