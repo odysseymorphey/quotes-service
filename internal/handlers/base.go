@@ -3,11 +3,11 @@ package handlers
 import "github.com/odysseymorphey/quotes-service/internal/repository"
 
 type BaseHandler struct {
-	repo repository.Repository
+	Repo repository.Repository
 }
 
 func New(r repository.Repository) *BaseHandler {
 	return &BaseHandler{
-		repo: r,
+		Repo: r,
 	}
 }

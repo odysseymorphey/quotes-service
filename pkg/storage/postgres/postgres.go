@@ -34,7 +34,7 @@ func (d *Database) AddQuote(ctx context.Context, q models.Quote) error {
 
 	_, err := d.db.ExecContext(ctx, query, q.Author, q.Quote)
 	if err != nil {
-		return fmt.Errorf("%w: failed to execute query: %v", op, err)
+		return fmt.Errorf("%s: failed to execute query: %v", op, err)
 	}
 
 	return nil

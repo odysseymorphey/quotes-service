@@ -14,19 +14,15 @@ func (h *BaseHandler) GetQuotes(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if author != "" {
-		quotes, err = h.repo.GetQuotesByAuthor(r.Context(), author)
-		if err != nil {
-			log.Printf("Can't get quotes by author: %v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
+		quotes, err = h.Repo.GetQuotesByAuthor(r.Context(), author)
 	} else {
-		quotes, err = h.repo.GetQuotes(r.Context())
-		if err != nil {
-			log.Printf("Can't get quotes: %v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
+		quotes, err = h.Repo.GetQuotes(r.Context())
+	}
+
+	if err != nil {
+		log.Printf("Can't get quotes: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")

@@ -15,7 +15,7 @@ func (h *BaseHandler) AddQuote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.repo.AddQuote(r.Context(), quote); err != nil {
+	if err := h.Repo.AddQuote(r.Context(), quote); err != nil {
 		log.Printf("Failed to add quote: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
