@@ -221,7 +221,6 @@ func TestBaseHandler_GetQuotes(t *testing.T) {
 
 			rr := httptest.NewRecorder()
 
-			// Настройка моков с учетом ошибок
 			if author := tt.queryParams["author"]; author != "" {
 				mockRepo.On("GetQuotesByAuthor", mock.Anything, author).
 					Return(tt.mockQuotes, tt.mockError)
